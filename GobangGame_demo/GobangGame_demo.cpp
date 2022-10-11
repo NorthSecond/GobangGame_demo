@@ -44,6 +44,7 @@ GobangGame_demo::~GobangGame_demo()
 	delete authorLabel;
 	delete PVPbtn;
 	delete PVEbtn;
+	
 	if (playWidget != nullptr) {
 		delete playWidget;
 	}

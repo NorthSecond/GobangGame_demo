@@ -19,6 +19,7 @@ public:
 protected:
 	void mousePressEvent(QMouseEvent* e);
 	void paintEvent(QPaintEvent* e);
+	void mouseMoveEvent(QMouseEvent* e);
 	
 private:
 	Ui::PlayWidgetClass ui;
@@ -26,6 +27,7 @@ private:
 	void drawBoard();
 	void drawPieces();
 	Role::role turns;
+	const static size_t chSize = UNIT_SIZE / 3;
 
 public slots:
 };

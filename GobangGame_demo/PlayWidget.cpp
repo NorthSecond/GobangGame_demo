@@ -19,6 +19,9 @@ PlayWidget::PlayWidget(bool isPVP, QWidget* parent)
 	setMaximumSize(CHESSVIEW_SIZE, CHESSVIEW_SIZE);
 	setMinimumSize(CHESSVIEW_SIZE, CHESSVIEW_SIZE);
 
+	// 侦测鼠标事件
+	setMouseTracking(true);
+	
 	turns = Role::ROLE_BLACK;
 	drawBoard();
 }
@@ -33,6 +36,47 @@ void PlayWidget::paintEvent(QPaintEvent* e) {
 	update();
 }
 
+void PlayWidget::mouseMoveEvent(QMouseEvent* e)
+{
+	size_t x_pos = e->x();
+	size_t y_pos = e->y();
+	x_pos -= 20;
+	y_pos -= 20;
+	QPainter painter(this);
+
+	painter.setRenderHint(QPainter::Antialiasing, true);
+	painter.setRenderHint(QPainter::TextAntialiasing, true);
+	painter.setRenderHint(QPainter::SmoothPixmapTransform, true);
+	painter.setRenderHint(QPainter::Antialiasing, true);
+
+	// Get index
+	size_t x_index, y_index;
+	if ((x_pos % UNIT_SIZE) < (UNIT_SIZE / 2)) {
+		x_index = x_pos / UNIT_SIZE;
+	}
+	else {
+		x_index = x_pos / UNIT_SIZE + 1;
+	}
+	if ((y_pos % UNIT_SIZE) < (UNIT_SIZE / 2)) {
+		y_index = y_pos / UNIT_SIZE;
+	}
+	else {
+		y_index = y_pos / UNIT_SIZE + 1;
+	}
+	
+	if (turns == Role::ROLE_BLACK) {
+		painter.setBrush(QBrush(QColor(Qt::black)));
+		painter.setPen(QPen(QColor(Qt::black)));
+		painter.drawEllipse(QPoint(x_index * UNIT_SIZE + 20, y_index * UNIT_SIZE + 20), chSize, chSize);
+	}
+	else {
+		painter.setBrush(QBrush(QColor(Qt::black)));
+		painter.setPen(QPen(QColor(Qt::white)));
+		painter.drawEllipse(QPoint(x_index * UNIT_SIZE + 20, y_index * UNIT_SIZE + 20), chSize, chSize);
+	}
+	update();
+}
+
 void PlayWidget::drawBoard() {
 	QPainter painter(this);
 	// 高质量采样
@@ -41,7 +85,7 @@ void PlayWidget::drawBoard() {
 	painter.setRenderHint(QPainter::SmoothPixmapTransform, true);
 	painter.setRenderHint(QPainter::Antialiasing, true);
 
-	// color: Burlywood2
+	// color: Burlywood
 	painter.setBrush(QBrush(QColor("#DEB887"), Qt::SolidPattern));
 	painter.drawRect(0, 0, CHESSVIEW_SIZE, CHESSVIEW_SIZE);
 
@@ -68,7 +112,6 @@ void PlayWidget::drawPieces()
 	QVector<QVector<Role::role>> nowTable = table.getTable();
 
 	// TODO: 棋子添加渐变
-	size_t chSize = UNIT_SIZE / 3;
 	for (size_t i = 0; i < tableSize; i++)
 	{
 		for (size_t j = 0; j < tableSize; j++)
@@ -76,11 +119,13 @@ void PlayWidget::drawPieces()
 			if (nowTable[i][j] == Role::ROLE_BLACK)
 			{
 				painter.setBrush(QBrush(QColor(Qt::black)));
+				painter.setPen(QPen(QColor(Qt::black)));
 				painter.drawEllipse(QPoint(i * UNIT_SIZE + 20, j * UNIT_SIZE + 20), chSize, chSize);
 			}
 			else if (nowTable[i][j] == Role::ROLE_WHITE)
 			{
 				painter.setBrush(QBrush(QColor(Qt::white)));
+				painter.setPen(QPen(QColor(Qt::white)));
 				painter.drawEllipse(QPoint(i * UNIT_SIZE + 20, j * UNIT_SIZE + 20), chSize, chSize);
 			}
 		}
