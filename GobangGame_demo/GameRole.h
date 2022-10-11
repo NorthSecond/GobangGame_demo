@@ -2,7 +2,7 @@
 
 constexpr size_t tableSize = 20U;
 constexpr size_t UNIT_SIZE = 48U;
-constexpr size_t CHESSVIEW_SIZE = UNIT_SIZE * tableSize;
+constexpr size_t CHESSVIEW_SIZE = UNIT_SIZE * tableSize + 40;
 
 namespace Role {
 	// roles in game
