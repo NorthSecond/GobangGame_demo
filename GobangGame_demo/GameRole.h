@@ -13,5 +13,6 @@ namespace Role {
 	constexpr int ROLE_BLACK = 1;
 	// 2: white
 	constexpr int ROLE_WHITE = 2;
+	// 3: border for AI
+	constexpr int BORDER = 3;
 };
-

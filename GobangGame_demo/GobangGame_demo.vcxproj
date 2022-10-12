@@ -85,6 +85,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="HeuristicallySearch.cpp" />
     <ClCompile Include="Piece.cpp" />
     <ClCompile Include="PlayWidget.cpp" />
     <QtRcc Include="GobangGame_demo.qrc" />
@@ -100,6 +101,7 @@
     <ClInclude Include="GameRole.h" />
     <ClInclude Include="GameTable.h" />
     <ClInclude Include="GameTree.h" />
+    <ClInclude Include="HeuristicallySearch.h" />
     <ClInclude Include="Piece.h" />
     <QtMoc Include="PlayWidget.h" />
   </ItemGroup>

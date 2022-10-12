@@ -5,7 +5,8 @@
 
 #include "ui_PlayWidget.h"
 #include "GameTable.h"
-#include "GameTree.h"
+#include "HeuristicallySearch.h"
+// #include "GameTree.h"
 
 class PlayWidget : public QWidget
 {
@@ -17,9 +18,9 @@ public:
 	//void drawStatus();
 
 protected:
+	void mouseMoveEvent(QMouseEvent* e);
 	void mousePressEvent(QMouseEvent* e);
 	void paintEvent(QPaintEvent* e);
-	void mouseMoveEvent(QMouseEvent* e);
 	
 private:
 	Ui::PlayWidgetClass ui;
@@ -28,6 +29,8 @@ private:
 	void drawPieces();
 	Role::role turns;
 	const static size_t chSize = UNIT_SIZE / 3;
+
+	HeuristicallySearch searcher;
 
 public slots:
 };

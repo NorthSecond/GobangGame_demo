@@ -53,4 +53,3 @@ public:
 	//unsigned int getBlackCount();
 	//unsigned int getWhiteCount();
 };
-

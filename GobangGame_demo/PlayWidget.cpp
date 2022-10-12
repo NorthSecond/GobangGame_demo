@@ -3,7 +3,7 @@
 // FIXME: 不行了搞个坐标转换函数吧
 
 PlayWidget::PlayWidget(bool isPVP, QWidget* parent)
-	: QWidget(parent)
+	: QWidget(parent), searcher()
 {
 	ui.setupUi(this);
 
@@ -21,7 +21,7 @@ PlayWidget::PlayWidget(bool isPVP, QWidget* parent)
 
 	// 侦测鼠标事件
 	setMouseTracking(true);
-	
+
 	turns = Role::ROLE_BLACK;
 	drawBoard();
 }
@@ -38,17 +38,11 @@ void PlayWidget::paintEvent(QPaintEvent* e) {
 
 void PlayWidget::mouseMoveEvent(QMouseEvent* e)
 {
-	size_t x_pos = e->x();
-	size_t y_pos = e->y();
+	size_t x_pos = e->pos().x();
+	size_t y_pos = e->pos().y();
 	x_pos -= 20;
 	y_pos -= 20;
 	QPainter painter(this);
-
-	painter.setRenderHint(QPainter::Antialiasing, true);
-	painter.setRenderHint(QPainter::TextAntialiasing, true);
-	painter.setRenderHint(QPainter::SmoothPixmapTransform, true);
-	painter.setRenderHint(QPainter::Antialiasing, true);
-
 	// Get index
 	size_t x_index, y_index;
 	if ((x_pos % UNIT_SIZE) < (UNIT_SIZE / 2)) {
@@ -63,7 +57,7 @@ void PlayWidget::mouseMoveEvent(QMouseEvent* e)
 	else {
 		y_index = y_pos / UNIT_SIZE + 1;
 	}
-	
+
 	if (turns == Role::ROLE_BLACK) {
 		painter.setBrush(QBrush(QColor(Qt::black)));
 		painter.setPen(QPen(QColor(Qt::black)));
@@ -74,6 +68,7 @@ void PlayWidget::mouseMoveEvent(QMouseEvent* e)
 		painter.setPen(QPen(QColor(Qt::white)));
 		painter.drawEllipse(QPoint(x_index * UNIT_SIZE + 20, y_index * UNIT_SIZE + 20), chSize, chSize);
 	}
+
 	update();
 }
 
@@ -94,7 +89,7 @@ void PlayWidget::drawBoard() {
 	// FIXME: 四周留一点空隙出来可能会好看一点
 	for (size_t i = 0; i <= tableSize; i++)
 	{
-		painter.drawLine(20, i * UNIT_SIZE + 20, CHESSVIEW_SIZE - 20 , i * UNIT_SIZE + 20);
+		painter.drawLine(20, i * UNIT_SIZE + 20, CHESSVIEW_SIZE - 20, i * UNIT_SIZE + 20);
 		painter.drawLine(i * UNIT_SIZE + 20, 20, i * UNIT_SIZE + 20, CHESSVIEW_SIZE - 20);
 	}
 	update();
@@ -172,5 +167,8 @@ void PlayWidget::mousePressEvent(QMouseEvent* e) {
 	}
 	else { // PVE
 		// TODO: AI
+		// 暂时只支持后手下
+		QPair<size_t, size_t> actPos = searcher.search(table.getTable(), Role::ROLE_WHITE);
+		table.act(Role::ROLE_WHITE, actPos.first, actPos.second);
 	}
 }
