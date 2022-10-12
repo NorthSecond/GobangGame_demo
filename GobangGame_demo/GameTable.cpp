@@ -187,6 +187,8 @@ void GameTable::endGame()
 	default:
 		break;
 	}
+	parent->close();
+	exit(0);
 }
 
 // DONE: 这个耦合程度太高了，考虑降低耦合程度
