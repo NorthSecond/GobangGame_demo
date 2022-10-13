@@ -3,7 +3,7 @@
 // FIXME: 不行了搞个坐标转换函数吧
 
 PlayWidget::PlayWidget(bool isPVP, QWidget* parent)
-	: QWidget(parent), searcher()
+	: QWidget(parent)/*, searcher()*/, tree()
 {
 	ui.setupUi(this);
 
@@ -168,7 +168,11 @@ void PlayWidget::mousePressEvent(QMouseEvent* e) {
 	else { // PVE
 		// TODO: AI
 		// 暂时只支持后手下
-		QPair<size_t, size_t> actPos = searcher.search(table.getTable(), Role::ROLE_WHITE);
+		//QPair<size_t, size_t> actPos = searcher.search(table.getTable(), Role::ROLE_WHITE);
+		//table.act(Role::ROLE_WHITE, actPos.first, actPos.second);
+		tree.nodenum = 0;
+		tree.dfs(table.getTable(), 0, INT_MIN, INT_MAX);
+		QPair<size_t, size_t> actPos = tree.nextpos;
 		table.act(Role::ROLE_WHITE, actPos.first, actPos.second);
 	}
 }

@@ -4,10 +4,11 @@
 
 #pragma once
 
+#include <queue>
+
 #include <QVector>
 #include <QSet>
 #include <QMap>
-#include <queue>
 #include <QQueue>
 
 #include "GameTable.h"
