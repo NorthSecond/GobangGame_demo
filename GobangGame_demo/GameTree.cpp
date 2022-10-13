@@ -1,24 +1,5 @@
 #include "GameTree.h"
 
-
-#define R_WIN 5000000
-#define R_FLEX4 50000
-#define R_BLOCK4 400
-#define R_FLEX3 400
-#define R_BLOCK3 20
-#define R_FLEX2 20
-#define R_BLOCK2 1
-#define R_FLEX1 1
-
-#define WIN -10000000
-#define FLEX4 -100000
-#define BLOCK4 -100000
-#define FLEX3 -8000
-#define BLOCK3 -50
-#define FLEX2 -50
-#define BLOCK2 -3
-#define FLEX1 -3
-
 GameTree::GameTree() {
 	initTulpes();
 	nodenum = 0;

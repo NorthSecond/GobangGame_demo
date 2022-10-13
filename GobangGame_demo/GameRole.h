@@ -16,3 +16,26 @@ namespace Role {
 	// 3: border for AI
 	constexpr int BORDER = 3;
 };
+
+// defined values when using AI.
+
+// ËÑË÷4²ã
+constexpr int MAX_DEPTH = 4;
+
+constexpr int R_WIN = 5000000;
+constexpr int R_FLEX4 = 50000;
+constexpr int R_BLOCK4 = 400;
+constexpr int R_FLEX3 = 400;
+constexpr int R_BLOCK3 = 20;
+constexpr int R_FLEX2 = 20;
+constexpr int R_BLOCK2 = 1;
+constexpr int R_FLEX1 = 1;
+
+constexpr int WIN = -10000000;
+constexpr int FLEX4 = -100000;
+constexpr int BLOCK4 = -100000;
+constexpr int FLEX3 = -8000;
+constexpr int BLOCK3 = -50;
+constexpr int FLEX2 = -50;
+constexpr int BLOCK2 = -3;
+constexpr int FLEX1 = -3;

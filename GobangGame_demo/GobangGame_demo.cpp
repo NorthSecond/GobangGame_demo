@@ -53,6 +53,8 @@ GobangGame_demo::~GobangGame_demo()
 void GobangGame_demo::initGameTable(bool isPVP)
 {
 	playWidget = new PlayWidget(isPVP);
+	// FIXME: Set the window icon
+	playWidget->setWindowIcon(QIcon(":/GobangGame_demo/img/R-C.png"));
 	playWidget->show();
 	this->hide();
 }

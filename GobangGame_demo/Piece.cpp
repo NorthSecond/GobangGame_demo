@@ -16,3 +16,8 @@ QPoint Piece::getPosition()
 {
 	return position;
 }
+
+bool Piece::operator==(const Piece& pieces)
+{
+	return (role == pieces.role && position == pieces.position);
+}

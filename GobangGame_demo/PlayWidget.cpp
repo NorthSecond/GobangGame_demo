@@ -20,7 +20,7 @@ PlayWidget::PlayWidget(bool isPVP, QWidget* parent)
 	setMinimumSize(CHESSVIEW_SIZE, CHESSVIEW_SIZE);
 
 	// 侦测鼠标事件
-	setMouseTracking(true);
+	setMouseTracking(false); // 代码还没完全完善
 
 	turns = Role::ROLE_BLACK;
 	drawBoard();
@@ -30,6 +30,7 @@ PlayWidget::~PlayWidget()
 {}
 
 void PlayWidget::paintEvent(QPaintEvent* e) {
+	
 	drawBoard();
 	drawPieces();
 
@@ -181,10 +182,6 @@ void PlayWidget::mousePressEvent(QMouseEvent* e) {
 	else {
 		y_index = y_pos / UNIT_SIZE + 1;
 	}
-	Node_action action; 
-	action.x = x_index;
-	action.y = y_index;
-	action.role = turns;
 	table.act(turns, x_index, y_index);
 	//update();
 
@@ -205,9 +202,5 @@ void PlayWidget::mousePressEvent(QMouseEvent* e) {
 		tree.dfs(table.getTable(), 0, INT_MIN, INT_MAX);
 		QPair<size_t, size_t> actPos = tree.nextpos;
 		table.act(Role::ROLE_WHITE, actPos.first, actPos.second);
-		Node_action action;
-		action.x = actPos.first;
-		action.y = actPos.second;
-		action.role = Role::ROLE_WHITE;
 	}
 }

@@ -35,9 +35,6 @@ struct myPoint {
 	}
 };
 
-// ËÑË÷4²ã
-constexpr int MAX_DEPTH = 4;
-
 class GameTree {
 private:
 	QVector<QVector<Role::role>> chessboard;
