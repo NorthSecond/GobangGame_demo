@@ -2,6 +2,7 @@
 
 #include <QWidget>
 #include <QMouseEvent>
+#include <QMessagebox>
 
 #include "ui_PlayWidget.h"
 #include "GameTable.h"

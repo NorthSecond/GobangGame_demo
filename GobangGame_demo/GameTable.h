@@ -1,6 +1,7 @@
 #pragma once
 
 #include <QVector>
+#include <QStack>
 #include <Qwidget>
 #include <QPainter>
 #include <QColor>
@@ -23,6 +24,12 @@ enum GameStatus
 	DRAW
 };
 
+typedef struct {
+	size_t x;
+	size_t y;
+	Role::role role;
+} Node_action;
+
 class GameTable
 {
 private:
@@ -32,6 +39,7 @@ private:
 	GameStatus gameStatus;
 	unsigned int blackCount;
 	unsigned int whiteCount;
+	QStack<Node_action> actionStack;
 	
 	void initGame();
 	
@@ -49,6 +57,8 @@ public:
 	void setGameType(GameType type);
 	GameType getGameType();
 	QVector<QVector<Role::role>> getTable();
+	bool canRegret();
+	void regret();
 
 	//unsigned int getBlackCount();
 	//unsigned int getWhiteCount();

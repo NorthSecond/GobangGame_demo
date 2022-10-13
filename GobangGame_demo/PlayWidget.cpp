@@ -128,7 +128,33 @@ void PlayWidget::drawPieces()
 }
 
 void PlayWidget::mousePressEvent(QMouseEvent* e) {
-	if (e->button() != Qt::LeftButton) { // 右键是用不到的
+	if (e->button() != Qt::LeftButton) { // 右键
+		//// 先写重开试一下
+		//table.startGame();
+		//turns = Role::ROLE_BLACK; // 重开后先手黑棋
+
+		if (!table.canRegret()) {
+			QMessageBox::information(this, QString("Can't regret!"), QString("No pawns to regret!"));
+			return;
+		}
+		
+		// 悔棋
+		if (table.getGameType() == PVP) {
+			// PVP 悔棋一次
+			table.regret();
+			if (turns == Role::ROLE_BLACK) {
+				turns = Role::ROLE_WHITE;
+			}
+			else {
+				turns = Role::ROLE_BLACK;
+			}
+		}
+		else {
+			// PVE 悔棋两次
+			table.regret();
+			table.regret();
+			turns = Role::ROLE_BLACK;
+		}
 		return;
 	}
 
@@ -155,7 +181,12 @@ void PlayWidget::mousePressEvent(QMouseEvent* e) {
 	else {
 		y_index = y_pos / UNIT_SIZE + 1;
 	}
+	Node_action action; 
+	action.x = x_index;
+	action.y = y_index;
+	action.role = turns;
 	table.act(turns, x_index, y_index);
+	//update();
 
 	if (table.getGameType() == PVP) { // PVP
 		if (turns == Role::ROLE_BLACK) {
@@ -174,5 +205,9 @@ void PlayWidget::mousePressEvent(QMouseEvent* e) {
 		tree.dfs(table.getTable(), 0, INT_MIN, INT_MAX);
 		QPair<size_t, size_t> actPos = tree.nextpos;
 		table.act(Role::ROLE_WHITE, actPos.first, actPos.second);
+		Node_action action;
+		action.x = actPos.first;
+		action.y = actPos.second;
+		action.role = Role::ROLE_WHITE;
 	}
 }

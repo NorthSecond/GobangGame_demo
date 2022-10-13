@@ -118,7 +118,6 @@ void GameTable::initGame()
 	gameStatus = PLAYING;
 	blackCount = 0;
 	whiteCount = 0;
-	
 }
 
 void GameTable::startGame()
@@ -136,6 +135,11 @@ bool GameTable::act(Role::role role, int x, int y)
 	{
 		return false;
 	}
+	Node_action node;
+	node.x = x;
+	node.y = y;
+	node.role = role;
+	actionStack.push(node);
 	table[x][y] = role;
 	if (role == Role::ROLE_BLACK)
 	{
@@ -233,3 +237,25 @@ QVector<QVector<int>> GameTable::getTable()
 //{
 //	return whiteCount;
 //}
+
+bool GameTable::canRegret() {
+	return blackCount + whiteCount > 0;
+}
+
+void GameTable::regret() {
+	if (actionStack.isEmpty()) {
+		return;
+	}
+	Node_action node = actionStack.top();
+	actionStack.pop();
+	table[node.x][node.y] = Role::ROLE_NONE;
+	if (node.role == Role::ROLE_BLACK)
+	{
+		blackCount--;
+	}
+	else if (node.role == Role::ROLE_WHITE)
+	{
+		whiteCount--;
+	}
+	flushGameStatus();
+}

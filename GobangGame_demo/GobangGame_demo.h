@@ -30,6 +30,7 @@ private:
     QPushButton* PVPbtn;
     QPushButton* PVEbtn;
     void initGameTable(bool isPVP);
+	
     /*GameTable table;*/
 
 public slots:
