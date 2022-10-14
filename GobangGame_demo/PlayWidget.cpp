@@ -59,6 +59,7 @@ void PlayWidget::mouseMoveEvent(QMouseEvent* e)
 		y_index = y_pos / UNIT_SIZE + 1;
 	}
 
+	// Draw the piece
 	if (turns == Role::ROLE_BLACK) {
 		painter.setBrush(QBrush(QColor(Qt::black)));
 		painter.setPen(QPen(QColor(Qt::black)));
@@ -81,13 +82,15 @@ void PlayWidget::drawBoard() {
 	painter.setRenderHint(QPainter::SmoothPixmapTransform, true);
 	painter.setRenderHint(QPainter::Antialiasing, true);
 
+	// Draw the board
 	// color: Burlywood
 	painter.setBrush(QBrush(QColor("#DEB887"), Qt::SolidPattern));
 	painter.drawRect(0, 0, CHESSVIEW_SIZE, CHESSVIEW_SIZE);
 
 	// lines
 	painter.setPen(QPen(QColor(Qt::black), 2));
-	// FIXME: 四周留一点空隙出来可能会好看一点
+	
+	// DONE: 四周留一点空隙出来可能会好看一点
 	for (size_t i = 0; i <= tableSize; i++)
 	{
 		painter.drawLine(20, i * UNIT_SIZE + 20, CHESSVIEW_SIZE - 20, i * UNIT_SIZE + 20);
@@ -100,6 +103,7 @@ void PlayWidget::drawPieces()
 {
 	QPainter painter(this);
 
+	// High quality sampling
 	painter.setRenderHint(QPainter::Antialiasing, true);
 	painter.setRenderHint(QPainter::TextAntialiasing, true);
 	painter.setRenderHint(QPainter::SmoothPixmapTransform, true);
@@ -107,6 +111,7 @@ void PlayWidget::drawPieces()
 
 	QVector<QVector<Role::role>> nowTable = table.getTable();
 
+	// Draw the pieces
 	// TODO: 棋子添加渐变
 	for (size_t i = 0; i < tableSize; i++)
 	{
@@ -129,7 +134,7 @@ void PlayWidget::drawPieces()
 }
 
 void PlayWidget::mousePressEvent(QMouseEvent* e) {
-	if (e->button() != Qt::LeftButton) { // 右键
+	if (e->button() != Qt::LeftButton) { // 右键一键悔棋
 		//// 先写重开试一下
 		//table.startGame();
 		//turns = Role::ROLE_BLACK; // 重开后先手黑棋
@@ -143,6 +148,7 @@ void PlayWidget::mousePressEvent(QMouseEvent* e) {
 		if (table.getGameType() == PVP) {
 			// PVP 悔棋一次
 			table.regret();
+			// 换手
 			if (turns == Role::ROLE_BLACK) {
 				turns = Role::ROLE_WHITE;
 			}
@@ -158,16 +164,20 @@ void PlayWidget::mousePressEvent(QMouseEvent* e) {
 		}
 		return;
 	}
-
+	
+	// 鼠标左键下棋
+	
 	// Get mouse position
 	size_t x_pos = e->pos().x();
 	size_t y_pos = e->pos().y();
+	
 	// if wrong position
 	if (x_pos < 20 || x_pos > CHESSVIEW_SIZE - 20 || y_pos < 20 || y_pos > CHESSVIEW_SIZE - 20) {
 		return;
 	}
 	x_pos -= 20;
 	y_pos -= 20;
+	
 	// Get index
 	size_t x_index, y_index;
 	if ((x_pos % UNIT_SIZE) < (UNIT_SIZE / 2)) {
@@ -194,7 +204,7 @@ void PlayWidget::mousePressEvent(QMouseEvent* e) {
 		}
 	}
 	else { // PVE
-		// TODO: AI
+		// DONE: AI
 		// 暂时只支持后手下
 		//QPair<size_t, size_t> actPos = searcher.search(table.getTable(), Role::ROLE_WHITE);
 		//table.act(Role::ROLE_WHITE, actPos.first, actPos.second);

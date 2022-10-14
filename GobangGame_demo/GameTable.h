@@ -30,6 +30,10 @@ typedef struct {
 	Role::role role;
 } Node_action;
 
+/**
+The core class of the game. 
+It cantains the game logic and the game's status.
+*/
 class GameTable
 {
 private:
@@ -39,24 +43,30 @@ private:
 	GameStatus gameStatus;
 	unsigned int blackCount;
 	unsigned int whiteCount;
+	// The stack used to record the actions of the game.
+	// Used in regret function.
 	QStack<Node_action> actionStack;
 	
 	void initGame();
+	void setGameType(GameType type);
+	
+	bool flushGameStatus();
+	GameStatus getNewStatus();
+	
+	void startGame();
+	void endGame();
 	
 public:
 	GameTable(QWidget* parent = nullptr, bool isPVP = false); 
 	~GameTable();
 
-	GameStatus getNewStatus();
-	void startGame();
 	bool act(Role::role role, int x, int y);
-	void endGame();
 
-	bool flushGameStatus();
 	GameStatus getGameStatus();
-	void setGameType(GameType type);
 	GameType getGameType();
 	QVector<QVector<Role::role>> getTable();
+
+	// Functions about regret
 	bool canRegret();
 	void regret();
 

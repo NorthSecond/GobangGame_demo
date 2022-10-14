@@ -1,6 +1,7 @@
 #pragma once
 
 #include <QPoint>
+#include <QPair>
 
 #include "GameRole.h"
 
@@ -8,13 +9,13 @@ class Piece
 {
 private:
 	Role::role role;
-	QPoint position;
+	QPair<size_t, size_t> position;
 public:
-	Piece(Role::role role, QPoint position);
+	Piece(Role::role role, QPair<size_t, size_t> position);
 	~Piece();
 
 	Role::role getRole();
-	QPoint getPosition();
+	QPair<size_t, size_t> getPosition();
 	
 	bool operator==(const Piece& pieces);
 };

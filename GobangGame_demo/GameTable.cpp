@@ -3,12 +3,7 @@
 GameTable::GameTable(QWidget* parent, bool isPVP)
 	: parent(parent)
 {
-	if (isPVP) {
-		setGameType(GameType::PVP);
-	}
-	else {
-		setGameType(GameType::PVE);
-	}
+	setGameType(isPVP ? GameType::PVP : GameType::PVE);
 	initGame();
 }
 
@@ -98,6 +93,7 @@ GameStatus GameTable::getNewStatus() {
 		}
 	}
 	// Draw
+	// 这里不遍历了，降低一下复杂度
 	if (blackCount + whiteCount == tableSize * tableSize) {
 		return DRAW;
 	}
@@ -106,6 +102,7 @@ GameStatus GameTable::getNewStatus() {
 
 void GameTable::initGame()
 {
+	// init table
 	table.resize(tableSize);
 	for (int i = 0; i < tableSize; i++)
 	{
@@ -115,6 +112,7 @@ void GameTable::initGame()
 			table[i][j] = 0;
 		}
 	}
+	// init game status
 	gameStatus = PLAYING;
 	blackCount = 0;
 	whiteCount = 0;
@@ -122,24 +120,33 @@ void GameTable::initGame()
 
 void GameTable::startGame()
 {
+	// abstruct.
 	initGame();
 }
 
 bool GameTable::act(Role::role role, int x, int y)
 {
+	// 落点在棋盘外
 	if (x < 0 || x > tableSize - 1 || y < 0 || y > tableSize - 1)
 	{
 		return false;
 	}
+	
+	// 落点已有棋子
 	if (table[x][y] != 0)
 	{
 		return false;
 	}
+	
+	// 写入stack中，用于悔棋
+	// TODO: 后期PVE多线程考虑Stack的线程安全和有序！
 	Node_action node;
 	node.x = x;
 	node.y = y;
 	node.role = role;
 	actionStack.push(node);
+	
+	// 落子
 	table[x][y] = role;
 	if (role == Role::ROLE_BLACK)
 	{
@@ -153,6 +160,7 @@ bool GameTable::act(Role::role role, int x, int y)
 	{
 		return false;
 	}
+	// 刷新获得最新状态
 	return flushGameStatus();
 }
 
@@ -195,10 +203,9 @@ void GameTable::endGame()
 	exit(0);
 }
 
-// DONE: 这个耦合程度太高了，考虑降低耦合程度
+// 修复了一些不合理的注释信息
 bool GameTable::flushGameStatus()
 {
-	// TODO: use return sentence instead of goto.
 	gameStatus = getNewStatus();
 	if (gameStatus != PLAYING)
 	{
@@ -238,16 +245,20 @@ QVector<QVector<int>> GameTable::getTable()
 //	return whiteCount;
 //}
 
+// 是否可以悔棋
 bool GameTable::canRegret() {
 	return blackCount + whiteCount > 0;
 }
 
 void GameTable::regret() {
+	// pop the last action from stack
 	if (actionStack.isEmpty()) {
 		return;
 	}
 	Node_action node = actionStack.top();
 	actionStack.pop();
+	
+	// remove the chess
 	table[node.x][node.y] = Role::ROLE_NONE;
 	if (node.role == Role::ROLE_BLACK)
 	{
@@ -257,5 +268,6 @@ void GameTable::regret() {
 	{
 		whiteCount--;
 	}
+	
 	flushGameStatus();
 }

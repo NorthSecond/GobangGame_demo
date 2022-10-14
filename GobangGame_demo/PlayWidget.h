@@ -29,6 +29,7 @@ private:
 	void drawBoard();
 	void drawPieces();
 	Role::role turns;
+	// the size of the chesses
 	const static size_t chSize = UNIT_SIZE / 3;
 
 	//HeuristicallySearch searcher;

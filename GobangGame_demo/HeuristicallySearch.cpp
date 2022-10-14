@@ -2,6 +2,7 @@
 
 HeuristicallySearch::HeuristicallySearch()
 {
+	// 初始化评分表
 	score.resize(tableSize);
 	for (size_t i = 0; i < tableSize; i++) {
 		score[i].resize(tableSize);
@@ -18,6 +19,7 @@ HeuristicallySearch::~HeuristicallySearch()
 {
 }
 
+// 清空评分表
 void HeuristicallySearch::flushScore() {
 	for (size_t i = 0; i < tableSize; i++) {
 		for (size_t j = 0; j < tableSize; j++) {
@@ -26,6 +28,7 @@ void HeuristicallySearch::flushScore() {
 	}
 }
 
+// 搜索函数
 QPair<size_t, size_t> HeuristicallySearch::search(QVector<QVector<Role::role>> table, Role::role role) {
 	size_t maxScore = evaluate(table, role);
 	QVector<QPair<size_t, size_t>> maxPoints;
@@ -44,6 +47,7 @@ QPair<size_t, size_t> HeuristicallySearch::search(QVector<QVector<Role::role>> t
 	return maxPoints[index];
 }
 
+// 评分函数
 size_t HeuristicallySearch::evaluate(QVector<QVector<Role::role>> table, Role::role role)
 {
 	Role::role enemy = role == Role::ROLE_WHITE ? Role::ROLE_BLACK : Role::ROLE_WHITE;

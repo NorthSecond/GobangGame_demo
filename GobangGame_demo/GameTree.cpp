@@ -13,9 +13,14 @@ GameTree::~GameTree() {
 
 }
 
+/**
+* 初始化各种情形的评分真值表
+* 这个函数参考了: https://github.com/cbeiy/qt-gobang/blob/master/ai.cpp
+*/
 void GameTree::initTulpes() {
 	//0空,1黑子,2白子,3边界
 	//第0位非己方棋子，第1位己方棋子
+	
 	//黑连5
 	tuple6[0][1][1][1][1][1] = WIN;
 	tuple6[2][1][1][1][1][1] = WIN;
@@ -328,6 +333,7 @@ int GameTree::dfs(const QVector<QVector<Role::role>>& board,
 					nextpos.second = tmp.pos[i].second;
 				}
 			}
+			// 剪枝
 			if (alpha >= beta) {
 				break;
 			}
@@ -371,6 +377,7 @@ int GameTree::dfs(const QVector<QVector<Role::role>>& board,
 
 			tmpBoard[tmp.pos[i].first][tmp.pos[i].second] = Role::ROLE_BLACK;
 			beta = std::min(dfs(tmpBoard, depth + 1, alpha, beta), beta);
+			// 剪枝
 			if (alpha >= beta) {
 				break;
 			}
