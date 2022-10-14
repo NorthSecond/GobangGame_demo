@@ -192,6 +192,11 @@ void PlayWidget::mousePressEvent(QMouseEvent* e) {
 	else {
 		y_index = y_pos / UNIT_SIZE + 1;
 	}
+	// 如果在有棋子的地方下棋是非法操作
+	if (table.getTable()[x_index][y_index] != Role::ROLE_NONE) {
+		return;
+	}
+	
 	table.act(turns, x_index, y_index);
 	//update();
 

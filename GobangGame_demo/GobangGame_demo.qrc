@@ -1,6 +1,5 @@
 <RCC>
     <qresource prefix="/GobangGame_demo">
-        <file>img/1.jpg</file>
         <file>img/R-C.png</file>
     </qresource>
 </RCC>

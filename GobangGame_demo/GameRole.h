@@ -2,7 +2,7 @@
 
 // The const values used in controling the size of the game view.
 constexpr size_t tableSize = 20U; // The number of the rows and lines used in table
-constexpr size_t UNIT_SIZE = 48U; // The size of a unit
+constexpr size_t UNIT_SIZE = 36U; // The size of a unit
 // The size of the game view
 constexpr size_t CHESSVIEW_SIZE = UNIT_SIZE * tableSize + 40; 
 
